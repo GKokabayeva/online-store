@@ -12,9 +12,45 @@ public partial class Pages_Management_ManageProducts : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
+        {
             GetImages();
+
+            if (!string.IsNullOrWhiteSpace(Request.QueryString["id"]))
+            {
+                int id = Convert.ToInt32(Request.QueryString["id"]);
+                FillPage(id);
+            }
+        }
     }
 
+    protected void btnSubmit_Click(object sender, EventArgs e)
+    {
+        ProductModel model = new ProductModel();
+        Product product = CreateProduct();
+
+        if (!string.IsNullOrWhiteSpace(Request.QueryString["id"]))
+        {
+            int id = Convert.ToInt32(Request.QueryString["id"]);
+            lblResult.Text = model.UpdateProduct(id, product);
+        }
+        else
+        {
+            lblResult.Text = model.InsertProduct(product);
+        }
+    }
+
+    private void FillPage(int id)
+    {
+        ProductModel productModel=new ProductModel();
+        Product product = productModel.GetProduct(id);
+
+        txtDescription.Text = product.Description;
+        txtName.Text = product.Name;
+        txtPrice.Text = product.Price.ToString();
+
+        ddlImage.SelectedValue = product.Image;
+        ddlType.SelectedValue = product.TypeId.ToString();
+    }
     private void GetImages()
     {
         try
@@ -50,13 +86,5 @@ public partial class Pages_Management_ManageProducts : System.Web.UI.Page
         product.Image = ddlImage.SelectedValue;
 
         return product;
-    }
-
-    protected void btnSubmit_Click(object sender, EventArgs e)
-    {
-        ProductModel model = new ProductModel();
-        Product product = CreateProduct();
-
-        lblResult.Text = model.InsertProduct(product);
     }
 }
