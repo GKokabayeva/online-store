@@ -10,6 +10,16 @@
         <EntityTypeShape EntityType="GarageDBModel.ProductType" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
         <AssociationConnector Association="GarageDBModel.FK_Cart_Product" ManuallyRouted="false" />
         <AssociationConnector Association="GarageDBModel.FK_Product_ProductTypes" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="GarageDBModel.UserInformation" Width="1.5" PointX="7" PointY="0.875" />
+        <EntityTypeShape EntityType="GarageDBModel.C__MigrationHistory" Width="1.5" PointX="7.75" PointY="4.75" />
+        <EntityTypeShape EntityType="GarageDBModel.AspNetRole" Width="1.5" PointX="0.75" PointY="6.5" />
+        <EntityTypeShape EntityType="GarageDBModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="7.625" />
+        <EntityTypeShape EntityType="GarageDBModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="5" />
+        <EntityTypeShape EntityType="GarageDBModel.AspNetUser" Width="1.5" PointX="3" PointY="5.375" />
+        <EntityTypeShape EntityType="GarageDBModel.sysdiagram" Width="1.5" PointX="7.75" PointY="7.75" />
+        <AssociationConnector Association="GarageDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="GarageDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="GarageDBModel.AspNetUserRoles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Microsoft.AspNet.Identity;
 
 public partial class Pages_Product : System.Web.UI.Page
 {
@@ -16,22 +17,31 @@ public partial class Pages_Product : System.Web.UI.Page
     {
         if (!string.IsNullOrWhiteSpace(Request.QueryString["id"]))
         {
-            string clientId = "-1";
-            int id = Convert.ToInt32(Request.QueryString["id"]);
-            int amount = Convert.ToInt32(ddlAmount.SelectedValue);
+            string clientId = Context.User.Identity.GetUserId();
 
-            Cart cart = new Cart()
+            if (clientId != null)
             {
-                Amount = amount,
-                ClientId = clientId,
-                DatePurchased = DateTime.Now,
-                IsInCart = true,
-                ProductId = id
-            };
 
-            CartModel model = new CartModel();
-            model.InsertCart(cart);
-            lblResult.Text = "Order was successfully inserted to your cart";
+                int id = Convert.ToInt32(Request.QueryString["id"]);
+                int amount = Convert.ToInt32(ddlAmount.SelectedValue);
+
+                Cart cart = new Cart()
+                {
+                    Amount = amount,
+                    ClientId = clientId,
+                    DatePurchased = DateTime.Now,
+                    IsInCart = true,
+                    ProductId = id
+                };
+
+                CartModel model = new CartModel();
+                model.InsertCart(cart);
+                lblResult.Text = "Order was successfully inserted to your cart";
+            }
+            else
+            {
+                lblResult.Text = "Please, log in to order items";
+            }
         }
     }
 
