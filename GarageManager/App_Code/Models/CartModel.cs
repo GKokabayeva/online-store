@@ -70,4 +70,62 @@ public class CartModel
             return "Error: " + e;
         }
     }
+
+    public List<Cart> GetOrdersInCart(string userID)
+    {
+        GarageDBEntities db = new GarageDBEntities();
+
+        List<Cart> orders = (from x in db.Carts
+                            where x.ClientId == userID
+                            && x.IsInCart
+                            orderby x.DatePurchased
+                            select x).ToList();
+
+        return orders;
+    }
+
+    public int GetAmountOfOrders(string userID)
+    {
+        try
+        {
+            GarageDBEntities db=new GarageDBEntities();
+
+            int amount = (from x in db.Carts
+                         where x.ClientId == userID
+                         && x.IsInCart
+                         select x.Amount).Sum();
+
+            return amount;
+        }
+        catch (Exception)
+        {
+            return 0;
+        }
+    }
+
+    public void UpdateQuantity(int id, int quantity)
+    {
+        GarageDBEntities db = new GarageDBEntities();
+
+        Cart cart = db.Carts.Find(id);
+        cart.Amount = quantity;
+
+        db.SaveChanges();
+    }
+
+    public void MarkOrdersAsPaid(List<Cart> carts)
+    {
+        GarageDBEntities db = new GarageDBEntities();
+
+        if (carts != null)
+        {
+            foreach (Cart cart in carts)
+            {
+                Cart oldCart = db.Carts.Find(cart.Id);
+                oldCart.DatePurchased=DateTime.Now;
+                oldCart.IsInCart = false;
+            }
+            db.SaveChanges();
+        }
+    }
 }
